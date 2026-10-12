@@ -1,12 +1,13 @@
 <script setup>
 import { game } from '../stores/game.js'
+import Icon from './Icon.vue'
 </script>
 
 <template>
   <div class="toasts">
     <TransitionGroup name="toast">
       <div v-for="t in game.toasts" :key="t.id" class="toast" :class="t.kind">
-        <span class="mark">{{ t.kind === 'success' ? '✦' : '◆' }}</span>
+        <Icon :name="t.kind === 'success' ? 'check' : 'lightning'" size="1.05rem" class="mark" />
         <span>{{ t.message }}</span>
       </div>
     </TransitionGroup>

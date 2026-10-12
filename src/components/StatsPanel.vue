@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from 'vue'
 import { game, ATTRS } from '../stores/game.js'
+import Icon from './Icon.vue'
 
 const p = computed(() => game.state.player)
 const points = computed(() => p.value.statPoints)
@@ -15,7 +16,7 @@ const points = computed(() => p.value.statPoints)
 
     <ul class="list">
       <li v-for="a in ATTRS" :key="a.key" class="stat">
-        <span class="icon">{{ a.icon }}</span>
+        <span class="icon"><Icon :name="a.icon" size="1.15rem" /></span>
         <span class="lbl">{{ a.label }}</span>
         <span class="val mono">{{ p.stats[a.key] }}</span>
         <button
@@ -23,7 +24,7 @@ const points = computed(() => p.value.statPoints)
           :disabled="points <= 0"
           :title="points > 0 ? 'Investir 1 ponto' : 'Sem pontos disponíveis'"
           @click="game.spendPoint(a.key)"
-        >+</button>
+        ><Icon name="plus" size="1rem" /></button>
       </li>
     </ul>
   </div>

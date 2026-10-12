@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from 'vue'
 import { game, rankForLevel } from '../stores/game.js'
+import Icon from './Icon.vue'
 
 const level = computed(() => game.levelUpQueue[0] ?? null)
 const rank = computed(() => (level.value ? rankForLevel(level.value) : null))
@@ -16,6 +17,7 @@ function dismiss () {
       <div class="levelup window">
         <div class="rays"></div>
         <p class="sys">[ SISTEMA ]</p>
+        <div class="up-ico"><Icon name="crown" size="2.4rem" /></div>
         <h2 class="big glow-text">LEVEL UP</h2>
         <div class="lvl-display">
           <span class="lbl">NÍVEL</span>
@@ -25,7 +27,7 @@ function dismiss () {
           {{ rank.rank }}-Rank · {{ rank.title }}
         </p>
         <p class="msg">Você ficou mais forte, Caçador. Distribua seus pontos de atributo.</p>
-        <button class="btn confirm" @click="dismiss">Receber Poder</button>
+        <button class="btn confirm" @click="dismiss"><Icon name="lightning" size="1.05em" /> Receber Poder</button>
       </div>
     </div>
   </Transition>
@@ -66,6 +68,14 @@ function dismiss () {
 }
 
 .sys { position: relative; font-size: 0.7rem; letter-spacing: 0.4em; color: var(--accent); margin: 0 0 8px; }
+.up-ico {
+  position: relative;
+  color: var(--accent);
+  filter: drop-shadow(0 0 16px var(--accent-glow));
+  margin-bottom: 6px;
+  animation: bob 2.2s ease-in-out infinite;
+}
+@keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
 .big {
   position: relative;
   font-size: 2rem;

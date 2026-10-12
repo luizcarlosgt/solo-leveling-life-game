@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from 'vue'
 import { game } from '../stores/game.js'
+import Icon from './Icon.vue'
 
 const pending = computed(() => game.state.penalty.pending)
 </script>
@@ -10,6 +11,7 @@ const pending = computed(() => game.state.penalty.pending)
     <div v-if="pending" class="overlay">
       <div class="penalty window">
         <p class="sys">[ ALERTA DO SISTEMA ]</p>
+        <div class="alert-ico"><Icon name="skull" size="2.6rem" /></div>
         <h2 class="big">ZONA DE PENALIDADE</h2>
         <p class="reason">{{ game.state.penalty.reason }}</p>
         <div class="loss">
@@ -45,6 +47,12 @@ const pending = computed(() => game.state.penalty.pending)
 .penalty::before, .penalty::after { border-color: var(--danger); }
 
 .sys { font-size: 0.7rem; letter-spacing: 0.4em; color: var(--danger); margin: 0 0 8px; }
+.alert-ico {
+  color: var(--danger);
+  filter: drop-shadow(0 0 18px rgba(239, 68, 68, 0.8));
+  margin-bottom: 6px;
+  animation: pulse 1.4s infinite;
+}
 .big {
   font-size: 1.6rem;
   font-weight: 800;

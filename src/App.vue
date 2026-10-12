@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted, onUnmounted, computed } from 'vue'
 import { game } from './stores/game.js'
+import Icon from './components/Icon.vue'
 import PlayerPanel from './components/PlayerPanel.vue'
 import StatsPanel from './components/StatsPanel.vue'
 import QuestList from './components/QuestList.vue'
@@ -35,7 +36,7 @@ function confirmReset () {
   <div class="app">
     <header class="topbar">
       <div class="brand">
-        <span class="sigil">⚔</span>
+        <span class="sigil"><Icon name="custom" size="1.9rem" /></span>
         <div>
           <h1 class="glow-text">SISTEMA</h1>
           <p class="sub">Hunter Life Game</p>
@@ -49,10 +50,10 @@ function confirmReset () {
 
       <div class="top-right">
         <div class="rank-pill" :style="{ '--c': rank.color }">
-          <span class="r">{{ rank.rank }}</span>
+          <span class="r"><Icon :name="rank.icon" size="0.95rem" /> {{ rank.rank }}</span>
           <span class="t">{{ rank.title }}</span>
         </div>
-        <button class="btn ghost" @click="confirmReset" title="Reiniciar progresso">⟲</button>
+        <button class="btn ghost" @click="confirmReset" title="Reiniciar progresso"><Icon name="refresh" size="1.1rem" /></button>
       </div>
     </header>
 
@@ -82,6 +83,10 @@ function confirmReset () {
       </section>
     </main>
 
+    <footer class="credits">
+      Ícones: <a href="https://pictogrammers.com/library/mdi/" target="_blank" rel="noopener">Material Design Icons</a> (MIT)
+    </footer>
+
     <LevelUpModal />
     <PenaltyModal />
     <Toasts />
@@ -107,9 +112,11 @@ function confirmReset () {
 
 .brand { display: flex; align-items: center; gap: 14px; }
 .sigil {
-  font-size: 1.7rem;
+  color: var(--accent);
+  display: inline-flex;
   filter: drop-shadow(0 0 10px var(--accent-glow));
 }
+.sigil :deep(svg) { filter: drop-shadow(0 0 6px var(--accent-glow)); }
 .brand h1 { font-size: 1.3rem; line-height: 1; }
 .sub { margin: 3px 0 0; font-size: 0.68rem; letter-spacing: 0.3em; color: var(--text-dim); text-transform: uppercase; }
 
@@ -139,7 +146,7 @@ function confirmReset () {
   background: color-mix(in srgb, var(--c) 12%, transparent);
   box-shadow: 0 0 20px -8px var(--c);
 }
-.rank-pill .r { font-family: 'Orbitron', sans-serif; font-weight: 800; color: var(--c); font-size: 1rem; line-height: 1; }
+.rank-pill .r { display: inline-flex; align-items: center; gap: 5px; font-family: 'Orbitron', sans-serif; font-weight: 800; color: var(--c); font-size: 1rem; line-height: 1; }
 .rank-pill .t { font-size: 0.58rem; letter-spacing: 0.1em; color: var(--text-dim); text-transform: uppercase; margin-top: 2px; }
 
 .grid {
@@ -154,6 +161,17 @@ function confirmReset () {
 .tip ul { margin: 0; padding: 14px 18px 16px 30px; display: flex; flex-direction: column; gap: 9px; }
 .tip li { font-size: 0.78rem; color: var(--text-dim); line-height: 1.5; }
 .tip strong { color: var(--text); }
+
+.credits {
+  margin-top: 26px;
+  text-align: center;
+  font-size: 0.66rem;
+  letter-spacing: 0.04em;
+  color: var(--text-dim);
+  opacity: 0.75;
+}
+.credits a { color: var(--accent); text-decoration: none; }
+.credits a:hover { text-decoration: underline; }
 
 @media (max-width: 1080px) {
   .grid { grid-template-columns: 1fr 1fr; }

@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import { game, DIFFICULTIES, ATTRS } from '../stores/game.js'
+import Icon from './Icon.vue'
 
 const form = ref({
   title: '',
@@ -26,8 +27,7 @@ function submit () {
 
 <template>
   <div class="window add-panel">
-    <div class="panel-title"><span class="dot"></span> Registrar Missão</div>
-    <form class="form" @submit.prevent="submit">
+    <div class="panel-title"><span class="dot"></span> Registrar Missão</div>    <form class="form" @submit.prevent="submit">
       <input v-model="form.title" class="input" placeholder="Ex.: Estudar 1h de programação" maxlength="60" />
       <textarea v-model="form.description" class="input" rows="2" placeholder="Descrição (opcional)" maxlength="120"></textarea>
 
@@ -48,7 +48,7 @@ function submit () {
       </label>
 
       <button class="btn" type="submit" :disabled="!form.title.trim()">
-        ⚔ Aceitar Missão
+        <Icon name="sword" size="1.05em" /> Aceitar Missão
       </button>
     </form>
   </div>

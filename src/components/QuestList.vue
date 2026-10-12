@@ -1,6 +1,7 @@
 <script setup>
 import { computed, ref } from 'vue'
 import { game, DIFFICULTIES, ATTRS } from '../stores/game.js'
+import Icon from './Icon.vue'
 
 const tab = ref('daily')
 const daily = computed(() => game.dailyQuests)
@@ -8,7 +9,7 @@ const custom = computed(() => game.customQuests)
 const list = computed(() => (tab.value === 'daily' ? daily.value : custom.value))
 
 function diffOf (q) { return DIFFICULTIES[q.difficulty] || DIFFICULTIES.normal }
-function attrOf (key) { return ATTRS.find(a => a.key === key) || { icon: '◆', label: key } }
+function attrOf (key) { return ATTRS.find(a => a.key === key) || { icon: 'target', label: key } }
 </script>
 
 <template>
@@ -17,10 +18,10 @@ function attrOf (key) { return ATTRS.find(a => a.key === key) || { icon: '◆', 
 
     <div class="tabs">
       <button class="tab" :class="{ active: tab === 'daily' }" @click="tab = 'daily'">
-        Diárias <span class="count mono">{{ game.dailyDone }}/{{ game.dailyTotal }}</span>
+        <Icon name="daily" size="1.05em" /> Diárias <span class="count mono">{{ game.dailyDone }}/{{ game.dailyTotal }}</span>
       </button>
       <button class="tab" :class="{ active: tab === 'custom' }" @click="tab = 'custom'">
-        Minhas Missões <span class="count mono">{{ custom.length }}</span>
+        <Icon name="scroll" size="1.05em" /> Minhas <span class="count mono">{{ custom.length }}</span>
       </button>
     </div>
 
@@ -42,7 +43,7 @@ function attrOf (key) { return ATTRS.find(a => a.key === key) || { icon: '◆', 
             :title="q.completed ? 'Desfazer' : 'Concluir missão'"
             @click="q.completed ? game.undoQuest(q.id) : game.completeQuest(q.id)"
           >
-            <span class="tick">✓</span>
+            <span class="tick"><Icon name="check" size="1rem" /></span>
           </button>
 
           <div class="info">
@@ -54,13 +55,13 @@ function attrOf (key) { return ATTRS.find(a => a.key === key) || { icon: '◆', 
             </div>
             <p v-if="q.description" class="desc">{{ q.description }}</p>
             <div class="meta">
-              <span class="tag">{{ attrOf(q.attribute).icon }} {{ attrOf(q.attribute).label }}</span>
-              <span v-if="q.repeat" class="tag repeat">↻ diária</span>
-              <span class="xp-tag">+{{ diffOf(q).xp }} XP</span>
+              <span class="tag"><Icon :name="attrOf(q.attribute).icon" size="0.95em" /> {{ attrOf(q.attribute).label }}</span>
+              <span v-if="q.repeat" class="tag repeat"><Icon name="refresh" size="0.95em" /> diária</span>
+              <span class="xp-tag"><Icon name="xp" size="0.9em" /> +{{ diffOf(q).xp }} XP</span>
             </div>
           </div>
 
-          <button class="del" title="Remover missão" @click="game.removeQuest(q.id)">✕</button>
+          <button class="del" title="Remover missão" @click="game.removeQuest(q.id)"><Icon name="close" size="0.9rem" /></button>
         </div>
       </TransitionGroup>
     </div>

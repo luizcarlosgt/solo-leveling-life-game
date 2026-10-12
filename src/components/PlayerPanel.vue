@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from 'vue'
 import { game } from '../stores/game.js'
+import Icon from './Icon.vue'
 
 const p = computed(() => game.state.player)
 const rank = computed(() => game.rank)
@@ -18,11 +19,12 @@ const dailyTotal = computed(() => game.dailyTotal)
       <div class="avatar" :style="{ '--rank-color': rank.color }">
         <span class="rank-letter">{{ rank.rank }}</span>
         <span class="rank-ring"></span>
+        <span class="rank-ico"><Icon :name="rank.icon" size="0.95rem" /></span>
       </div>
 
       <div class="ident">
         <h2 class="name glow-text">{{ p.name }}</h2>
-        <p class="title-line" :style="{ color: rank.color }">{{ p.title }}</p>
+        <p class="title-line" :style="{ color: rank.color }">{{ rank.title }}</p>
         <p class="class-line">Classe: <strong>{{ rank.className }}</strong></p>
       </div>
 
@@ -34,7 +36,7 @@ const dailyTotal = computed(() => game.dailyTotal)
 
     <div class="xp">
       <div class="xp-head">
-        <span>EXPERIÊNCIA</span>
+        <span><Icon name="xp" size="0.85em" /> EXPERIÊNCIA</span>
         <span class="mono">{{ p.xp }} / {{ xpNeeded }}</span>
       </div>
       <div class="bar">
@@ -45,28 +47,29 @@ const dailyTotal = computed(() => game.dailyTotal)
     <div class="mini-stats">
       <div class="mini">
         <span class="mini-val mono">{{ dailyDone }}/{{ dailyTotal }}</span>
-        <span class="mini-lbl">Missões hoje</span>
+        <span class="mini-lbl"><Icon name="daily" size="0.9em" /> Missões</span>
       </div>
       <div class="mini">
         <span class="mini-val mono" :class="{ hot: p.statPoints > 0 }">{{ p.statPoints }}</span>
-        <span class="mini-lbl">Pontos de atributo</span>
+        <span class="mini-lbl"><Icon name="target" size="0.9em" /> Pontos</span>
       </div>
       <div class="mini">
-        <span class="mini-val mono">{{ game.state.streak }}🔥</span>
-        <span class="mini-lbl">Sequência</span>
+        <span class="mini-val mono">{{ game.state.streak }}</span>
+        <span class="mini-lbl"><Icon name="streak" size="0.9em" /> Sequência</span>
       </div>
       <div class="mini">
         <span class="mini-val mono">{{ p.totalXp }}</span>
-        <span class="mini-lbl">XP total</span>
+        <span class="mini-lbl"><Icon name="lightning" size="0.9em" /> XP total</span>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-.player-panel { overflow: hidden; }
+.player-panel { overflow: hidden; position: relative; }
 
 .body {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 16px;
@@ -86,11 +89,20 @@ const dailyTotal = computed(() => game.dailyTotal)
 }
 
 .rank-letter {
+  position: relative;
   font-family: 'Orbitron', sans-serif;
   font-size: 2.1rem;
   font-weight: 800;
   color: var(--rank-color);
   text-shadow: 0 0 16px var(--rank-color);
+}
+
+.rank-ico {
+  position: absolute;
+  right: 4px; bottom: 3px;
+  color: var(--rank-color);
+  opacity: 0.9;
+  filter: drop-shadow(0 0 5px var(--rank-color));
 }
 
 .rank-ring {
@@ -100,15 +112,17 @@ const dailyTotal = computed(() => game.dailyTotal)
   border: 1px dashed var(--rank-color);
   opacity: 0.4;
   animation: spin 12s linear infinite;
+  pointer-events: none;
 }
 
-.ident { flex: 1; min-width: 0; }
+.ident { position: relative; flex: 1; min-width: 0; }
 .name { font-size: 1.25rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .title-line { margin: 4px 0 2px; font-weight: 600; letter-spacing: 0.05em; font-size: 0.86rem; }
 .class-line { margin: 0; color: var(--text-dim); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; }
 .class-line strong { color: var(--text); }
 
 .level-badge {
+  position: relative;
   display: flex; flex-direction: column; align-items: center;
   padding: 8px 14px;
   border-radius: 12px;
@@ -119,8 +133,10 @@ const dailyTotal = computed(() => game.dailyTotal)
 .lvl-label { font-size: 0.6rem; letter-spacing: 0.22em; color: var(--text-dim); }
 .lvl-value { font-family: 'Orbitron', sans-serif; font-size: 1.7rem; font-weight: 800; color: var(--accent); text-shadow: 0 0 14px var(--accent-glow); line-height: 1; }
 
-.xp { padding: 4px 18px 16px; }
-.xp-head { display: flex; justify-content: space-between; font-size: 0.68rem; letter-spacing: 0.16em; color: var(--text-dim); margin-bottom: 6px; }
+.xp { position: relative; padding: 4px 18px 16px; }
+.xp-head { display: flex; justify-content: space-between; align-items: center; font-size: 0.68rem; letter-spacing: 0.16em; color: var(--text-dim); margin-bottom: 6px; }
+.xp-head span:first-child { display: inline-flex; align-items: center; gap: 6px; }
+.xp-head :deep(.ico) { color: var(--accent); }
 
 .bar {
   height: 12px;
@@ -147,6 +163,7 @@ const dailyTotal = computed(() => game.dailyTotal)
 }
 
 .mini-stats {
+  position: relative;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   border-top: 1px solid var(--border);
@@ -155,7 +172,8 @@ const dailyTotal = computed(() => game.dailyTotal)
 .mini:last-child { border-right: none; }
 .mini-val { display: block; font-family: 'Orbitron', sans-serif; font-size: 1.05rem; font-weight: 700; color: var(--text); }
 .mini-val.hot { color: var(--gold); text-shadow: 0 0 12px rgba(245,158,11,.6); animation: pulse 1.6s infinite; }
-.mini-lbl { display: block; font-size: 0.6rem; letter-spacing: 0.08em; color: var(--text-dim); text-transform: uppercase; margin-top: 2px; }
+.mini-lbl { display: inline-flex; align-items: center; gap: 4px; font-size: 0.6rem; letter-spacing: 0.08em; color: var(--text-dim); text-transform: uppercase; margin-top: 2px; }
+.mini-lbl :deep(.ico) { color: var(--accent); }
 
 @keyframes spin { to { transform: rotate(360deg); } }
 @keyframes sheen { 0% { transform: translateX(-100%); } 100% { transform: translateX(200%); } }

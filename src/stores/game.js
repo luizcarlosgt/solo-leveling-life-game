@@ -3,11 +3,11 @@ import { reactive, computed } from 'vue'
 const STORAGE_KEY = 'solo-life-game-v1'
 
 export const ATTRS = [
-  { key: 'forca', label: 'Força', icon: '💪' },
-  { key: 'agilidade', label: 'Agilidade', icon: '⚡' },
-  { key: 'vitalidade', label: 'Vitalidade', icon: '❤️' },
-  { key: 'inteligencia', label: 'Inteligência', icon: '🧠' },
-  { key: 'percepcao', label: 'Percepção', icon: '👁️' }
+  { key: 'forca', label: 'Força', icon: 'forca' },
+  { key: 'agilidade', label: 'Agilidade', icon: 'agilidade' },
+  { key: 'vitalidade', label: 'Vitalidade', icon: 'vitalidade' },
+  { key: 'inteligencia', label: 'Inteligência', icon: 'inteligencia' },
+  { key: 'percepcao', label: 'Percepção', icon: 'percepcao' }
 ]
 
 export const DIFFICULTIES = {
@@ -19,13 +19,13 @@ export const DIFFICULTIES = {
 }
 
 export const RANKS = [
-  { min: 1, rank: 'E', title: 'Caçador Novato', className: 'Novato', color: '#94a3b8' },
-  { min: 10, rank: 'D', title: 'Caçador de Ferro', className: 'Guerreiro', color: '#4ade80' },
-  { min: 20, rank: 'C', title: 'Caçador de Bronze', className: 'Assassino', color: '#38bdf8' },
-  { min: 35, rank: 'B', title: 'Caçador de Prata', className: 'Mago', color: '#818cf8' },
-  { min: 50, rank: 'A', title: 'Caçador de Ouro', className: 'Mestre', color: '#c084fc' },
-  { min: 70, rank: 'S', title: 'Monarca das Sombras', className: 'Monarca', color: '#f59e0b' },
-  { min: 100, rank: 'SS', title: 'Ser Transcendental', className: 'Transcendental', color: '#ef4444' }
+  { min: 1, rank: 'E', title: 'Caçador Novato', className: 'Novato', color: '#94a3b8', icon: 'user' },
+  { min: 10, rank: 'D', title: 'Caçador de Ferro', className: 'Guerreiro', color: '#4ade80', icon: 'shield' },
+  { min: 20, rank: 'C', title: 'Caçador de Bronze', className: 'Assassino', color: '#38bdf8', icon: 'sword' },
+  { min: 35, rank: 'B', title: 'Caçador de Prata', className: 'Mago', color: '#818cf8', icon: 'target' },
+  { min: 50, rank: 'A', title: 'Caçador de Ouro', className: 'Mestre', color: '#c084fc', icon: 'trophy' },
+  { min: 70, rank: 'S', title: 'Monarca das Sombras', className: 'Monarca', color: '#f59e0b', icon: 'crown' },
+  { min: 100, rank: 'SS', title: 'Ser Transcendental', className: 'Transcendental', color: '#ef4444', icon: 'skull' }
 ]
 
 const DEFAULT_DAILY = [
