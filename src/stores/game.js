@@ -1,4 +1,5 @@
 import { reactive, computed } from 'vue'
+import { track } from '@vercel/analytics'
 
 const STORAGE_KEY = 'solo-life-game-v1'
 
@@ -203,6 +204,7 @@ export const game = reactive({
 
     this.log(`Missão cumprida: "${q.title}" (+${gain} XP, +${bonus} ${attrLabel(q.attribute)})`)
     this.toast(`+${gain} XP  •  ${q.title}`, 'success')
+    track('quest_completed', { difficulty: q.difficulty, xp: gain, type: q.type, attribute: q.attribute })
     this.grantXp(gain)
     this.checkStreak()
     this.persist()
@@ -237,6 +239,7 @@ export const game = reactive({
       const r = rankForLevel(p.level)
       p.title = r.title
       this.log(`SUBIU DE NÍVEL! Agora é nível ${p.level} — ${r.title}`, 'level')
+      track('level_up', { level: p.level, rank: r.rank })
     }
   },
 
@@ -265,6 +268,7 @@ export const game = reactive({
       this.state.player.statPoints = Math.max(0, this.state.player.statPoints)
       this.log('ZONA DE PENALIDADE: missões diárias falharam.', 'penalty')
       this.state.streak = 0
+      track('penalty', { xpLost: loss, streakReset: true })
     }
 
     this.dailyQuests.forEach(q => { q.completed = false; q.completedAt = null })
