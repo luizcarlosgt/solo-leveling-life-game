@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted, onUnmounted, computed } from 'vue'
 import { game } from './stores/game.js'
+import { mountFlags } from './flags.js'
 import Icon from './components/Icon.vue'
 import PlayerPanel from './components/PlayerPanel.vue'
 import StatsPanel from './components/StatsPanel.vue'
@@ -16,6 +17,7 @@ let timer = null
 
 onMounted(() => {
   timer = setInterval(() => game.checkDailyReset(), 60000)
+  mountFlags()
 })
 
 onUnmounted(() => clearInterval(timer))
@@ -29,6 +31,11 @@ function confirmReset () {
   if (confirm('Reiniciar todo o progresso? Isso apagará nível, atributos e missões.')) {
     game.resetGame()
   }
+}
+
+function togglePenalty () {
+  game.state.settings.penaltyEnabled = !game.state.settings.penaltyEnabled
+  game.persist()
 }
 </script>
 
@@ -79,6 +86,11 @@ function confirmReset () {
             <li>Missões diárias não concluídas ativam a <strong>Zona de Penalidade</strong> e você perde XP.</li>
             <li>Seu progresso é salvo automaticamente no navegador.</li>
           </ul>
+          <label class="toggle" @change="togglePenalty">
+            <input type="checkbox" :checked="game.state.settings.penaltyEnabled" />
+            <span class="track"><span class="thumb"><Icon name="sword" size="0.75rem" /></span></span>
+            <span>Zona de Penalidade ativa</span>
+          </label>
         </div>
       </section>
     </main>
@@ -161,6 +173,46 @@ function confirmReset () {
 .tip ul { margin: 0; padding: 14px 18px 16px 30px; display: flex; flex-direction: column; gap: 9px; }
 .tip li { font-size: 0.78rem; color: var(--text-dim); line-height: 1.5; }
 .tip strong { color: var(--text); }
+
+.toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px 16px;
+  border-top: 1px dashed var(--border);
+  cursor: pointer;
+  font-size: 0.74rem;
+  color: var(--text-dim);
+  user-select: none;
+}
+.toggle input { display: none; }
+.toggle .track {
+  width: 40px;
+  height: 22px;
+  border-radius: 999px;
+  background: rgba(4, 8, 18, 0.9);
+  border: 1px solid var(--border);
+  position: relative;
+  transition: background 0.2s, border-color 0.2s;
+  flex-shrink: 0;
+}
+.toggle .thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--text-dim);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #060a14;
+  transition: transform 0.2s, background 0.2s;
+}
+.toggle input:checked + .track { background: color-mix(in srgb, var(--accent) 22%, rgba(4,8,18,0.9)); border-color: var(--accent); }
+.toggle input:checked + .track .thumb { transform: translateX(18px); background: var(--accent); color: #060a14; }
+.toggle:hover { color: var(--text); }
 
 .credits {
   margin-top: 26px;
